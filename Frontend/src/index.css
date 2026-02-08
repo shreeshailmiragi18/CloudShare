@@ -4,3 +4,6 @@
 * {
   font-family: "Urbanist", sans-serif;
 }
+.landing-page {
+  @apply overflow-y-auto h-screen;
+}
