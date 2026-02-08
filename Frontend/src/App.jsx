@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import MyFiles from "./pages/MyFiles";
 import PublicFileView from "./pages/PublicFileView";
 import Subscription from "./pages/Subscription";
-import Transcations from "./pages/Transactions";
+import Transactions from "./pages/Transactions";
 import Upload from "./pages/Upload";
 import Landing from "./pages/Landing";
 
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/myfiles" element={<MyFiles />} />
         <Route path="/publicfileview" element={<PublicFileView />} />
         <Route path="/subscription" element={<Subscription />} />
-        <Route path="/transactions" element={<Transcations />} />
+        <Route path="/transactions" element={<Transactions />} />
         <Route path="/upload" element={<Upload />} />
       </Routes>
     </BrowserRouter>
