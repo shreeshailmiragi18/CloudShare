@@ -79,13 +79,22 @@ export const testimonials = [
     rating: 4.5,
   },
   {
-    name: "shree",
-    role: "student",
+    name: "Shree",
+    role: "Student",
     company: "UVCE",
     image: "https://randomuser.me/api/portraits/men/12.jpg",
     quote:
       "CloudShare has been a lifesaver for me as a student. I can easily upload and share my assignments and projects with my classmates and professors. The secure storage gives me peace of mind.",
     rating: 5,
+  },
+  {
+    name: "Virat",
+    role: "Senior Developer",
+    company: "Tech Innovators",
+    image: "https://randomuser.me/api/portraits/men/55.jpg",
+    quote:
+      "CloudShare's file management and sharing features have greatly improved our development workflow. The secure storage and flexible credits make it a great choice for our team.",
+    rating: 4.5,
   },
 ];
 
