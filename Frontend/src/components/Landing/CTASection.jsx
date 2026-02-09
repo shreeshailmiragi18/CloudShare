@@ -1,4 +1,4 @@
-const CTASection = () => {
+const CTASection = ({ openSignUp }) => {
   return (
     <div className="bg-purple-500">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col lg:flex-row lg:items-center lg:justify-between">
@@ -10,7 +10,10 @@ const CTASection = () => {
         </h2>
         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
           <div className="inline-flex rounded-md shadow">
-            <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50 transition-colors duration-200 cursor-pointer scale-105 hover:scale-110 shadow-lg hover:shadow-xl">
+            <button
+              onClick={openSignUp}
+              className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50 transition-colors duration-200 cursor-pointer scale-105 hover:scale-110 shadow-lg hover:shadow-xl"
+            >
               Sign up for free
             </button>
           </div>
