@@ -93,14 +93,14 @@ export const pricingPlans = [
   {
     name: "Free",
     price: "0",
-    description: "Perfect for individuals with light storage needs.",
+    description: "Perfect for getting started.",
     features: [
       "5 files uploads",
       "Basic file retention",
       "7-day file retention",
       "Email support",
     ],
-    cta: "Go Free",
+    cta: "Get Started",
     highlighted: false,
   },
   {
