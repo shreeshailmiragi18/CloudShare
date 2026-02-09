@@ -4,6 +4,7 @@ import FooterSection from "../components/Landing/FooterSection";
 import HeroSection from "../components/Landing/HeroSection";
 import PricingSection from "../components/Landing/PricingSection";
 import TestimonialsSection from "../components/Landing/TestimonialSection";
+import { features } from "../assets/data";
 
 const Landing = () => {
   return (
@@ -12,7 +13,7 @@ const Landing = () => {
       <HeroSection />
 
       {/* Features section */}
-      <FeatureSection />
+      <FeatureSection features={features} />
 
       {/* pricing section */}
       <PricingSection />

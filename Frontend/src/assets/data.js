@@ -11,7 +11,7 @@ export const features = [
     iconColor: "text-green-500",
     title: "Secure Storage",
     description:
-      "Your files are encrypted and stored securely in the cloud, ensuring your data is safe from unauthorized access.",
+      "Your files are encrypted and stored securely in the cloud infrastructure.",
   },
   {
     iconName: "Share2",
@@ -24,24 +24,23 @@ export const features = [
     iconName: "CreditCard",
     iconColor: "text-orange-500",
     title: "Flexible credits",
-    description:
-      "pay only for what you use with our flexible credit system, making it affordable for everyone.",
+    description: "pay only for what you use with our flexible credit system.",
   },
   {
     iconName: "FileText",
     iconColor: "text-red-500",
     title: "File Management",
-    description:
-      "Organize, categorize, and manage your files efficiently with our comprehensive file management tools.",
+    description: "Organize, categorize, and manage your files from any device",
   },
   {
     iconName: "Clock",
     iconColor: "text-indigo-500",
     title: "Transaction History",
     description:
-      "View and track all your transactions with detailed history and insights.",
+      "View and track all your transactions with detailed history and insights a.",
   },
 ];
+
 export const testimonials = [
   {
     name: "Sarah Johnson",
