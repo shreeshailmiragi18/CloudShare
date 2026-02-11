@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import MyFiles from "./pages/MyFiles";
-import PublicFileView from "./pages/PublicFileView";
 import Subscription from "./pages/Subscription";
 import Transactions from "./pages/Transactions";
 import Upload from "./pages/Upload";
@@ -87,7 +86,7 @@ const App = () => {
 
         <Route path="/*" element={<RedirectToSignIn />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> 
   );
 };
 
