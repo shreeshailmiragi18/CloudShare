@@ -1,0 +1,25 @@
+package com.shree.Backend.controller;
+
+import com.shree.Backend.dto.ProfileDto;
+import com.shree.Backend.service.ProfileService;
+import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class ProfileController {
+
+    private final ProfileService profileService;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerProfile(@RequestBody ProfileDto profileDto) {
+        ProfileDto savedProfile = profileService.createProfile(profileDto);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(savedProfile);
+    }
+}
