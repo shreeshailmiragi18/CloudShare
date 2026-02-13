@@ -1,12 +1,14 @@
 package com.shree.Backend.service;
 
-import com.mongodb.DuplicateKeyException;
 import com.shree.Backend.documents.ProfileDocument;
 import com.shree.Backend.dto.ProfileDto;
 
 import com.shree.Backend.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
@@ -16,7 +18,13 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public ProfileDto createProfile(ProfileDto profileDto) throws DuplicateKeyException {
+
+
+    public ProfileDto createProfile(ProfileDto profileDto) {
+
+        if(profileRepository.existsByClerkId(profileDto.getClerkId())){
+            return updateProfile(profileDto);
+        }
 
         ProfileDocument profile = ProfileDocument.builder()
                 .clerkId(profileDto.getClerkId())
@@ -27,11 +35,11 @@ public class ProfileService {
                 .photoUrl(profileDto.getPhotoUrl())
                 .createdAt(Instant.now())
                 .build();
-       try{
-           profile = profileRepository.save(profile);
-       } catch (DuplicateKeyException e) {
-           throw new RuntimeException("User already exists");
-       }
+
+
+            profile = profileRepository.save(profile);
+
+
 
 
         return ProfileDto.builder()
@@ -44,5 +52,52 @@ public class ProfileService {
                 .photoUrl(profileDto.getPhotoUrl())
                 .createdAt(profile.getCreatedAt())
                 .build();
+    }
+
+    public ProfileDto updateProfile(ProfileDto profileDto) {
+      ProfileDocument existingProfile =  profileRepository.findByClerkId(profileDto.getClerkId());
+
+      if(existingProfile != null){
+          if(profileDto.getEmail() != null && !profileDto.getEmail().isEmpty()){
+              existingProfile.setEmail(profileDto.getEmail());
+          }
+
+          if(profileDto.getFirstName() != null && !profileDto.getFirstName().isEmpty()){
+              existingProfile.setFirstName(profileDto.getFirstName());
+          }
+
+          if(profileDto.getLastName() != null && !profileDto.getLastName().isEmpty()){
+              existingProfile.setLastName(profileDto.getLastName());
+          }
+
+          if(profileDto.getPhotoUrl() != null && !profileDto.getPhotoUrl().isEmpty()){
+              existingProfile.setPhotoUrl(profileDto.getPhotoUrl());
+          }
+
+          profileRepository.save(existingProfile);
+
+           return ProfileDto.builder()
+                  .id(existingProfile.getId())
+                  .clerkId(existingProfile.getClerkId())
+                  .email(existingProfile.getEmail())
+                  .firstName(existingProfile.getFirstName())
+                  .lastName(existingProfile.getLastName())
+                  .photoUrl(existingProfile.getPhotoUrl())
+                  .createdAt(existingProfile.getCreatedAt())
+                  .build();
+      }
+    return null;
+
+    }
+
+    public boolean existsByClerkId(String clerkId) {
+        return profileRepository.existsByClerkId(clerkId);
+    }
+
+    public void deleteProfile(String clerkId) {
+        ProfileDocument existingProfile = profileRepository.findByClerkId(clerkId);
+        if(existingProfile != null){
+            profileRepository.delete(existingProfile);
+        }
     }
 }
