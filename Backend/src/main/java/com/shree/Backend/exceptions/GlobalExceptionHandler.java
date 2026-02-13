@@ -20,4 +20,3 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(data);
     }
 }
- // needs to be edited
