@@ -5,10 +5,9 @@ import com.shree.Backend.dto.ProfileDto;
 
 import com.shree.Backend.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.Instant;
 
