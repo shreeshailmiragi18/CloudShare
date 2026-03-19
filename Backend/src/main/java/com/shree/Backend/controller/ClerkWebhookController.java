@@ -2,6 +2,7 @@ package com.shree.Backend.controller;
 
 import com.shree.Backend.dto.ProfileDto;
 import com.shree.Backend.service.ProfileService;
+import com.shree.Backend.service.UserCreditsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ public class ClerkWebhookController {
     private String webhookSecret;
 
     private final ProfileService profileService;
+    private final UserCreditsService userCreditsService;
+
 
     @PostMapping("/clerk")
     public ResponseEntity<?> handleClerkWebhook(@RequestHeader("svix-id") String svixId,
@@ -35,7 +38,7 @@ public class ClerkWebhookController {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(payload);
             String eventType = rootNode.path("type").asText();
-
+ 
             switch (eventType){
                 case "user.created":
                     handleUserCreated(rootNode.path("data"));
@@ -110,6 +113,7 @@ public class ClerkWebhookController {
                 .build();
 
         profileService.createProfile(newProfile);
+        userCreditsService.createInitialCredits(clerkId);
 
     }
 
