@@ -1,20 +1,25 @@
 package com.shree.Backend.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shree.Backend.dto.ProfileDto;
 import com.shree.Backend.service.ProfileService;
 import com.shree.Backend.service.UserCreditsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 
+
+
+@CrossOrigin
 @RestController
 @RequestMapping("/webhooks")
 @RequiredArgsConstructor
+@Slf4j
 public class ClerkWebhookController {
 
     @Value("${clerk.webhook.secret}")
@@ -29,6 +34,7 @@ public class ClerkWebhookController {
                                                 @RequestHeader("svix-timestamp") String svixTimestamp,
                                                 @RequestHeader("svix-signature") String svixSignature,
                                                 @RequestBody String payload ){
+        log.info("Received Clerk Webhook Request");
         try{
             boolean isValid = verifyWebhookSignature(svixId,svixTimestamp,svixSignature,payload);
             if(!isValid){
@@ -38,7 +44,7 @@ public class ClerkWebhookController {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(payload);
             String eventType = rootNode.path("type").asText();
- 
+
             switch (eventType){
                 case "user.created":
                     handleUserCreated(rootNode.path("data"));
@@ -68,8 +74,8 @@ public class ClerkWebhookController {
 
         String email = "";
         JsonNode emailAddresses = data.path("email_addresses");
-        if(emailAddresses.isArray() && emailAddresses.size() > 0){
-            email = emailAddresses.get(0).path("email_addresses").asText();
+        if(emailAddresses.isArray() && !emailAddresses.isEmpty()){
+            email = emailAddresses.get(0).path("email_address").asText();
         }
         String firstName = data.path("first_name").asText("");
         String lastName = data.path("last_name").asText("");
@@ -95,7 +101,7 @@ public class ClerkWebhookController {
 
         String email = "";
         JsonNode emailAddresses = data.path("email_addresses");
-        if(emailAddresses.isArray() && emailAddresses.size()>0){
+        if(emailAddresses.isArray() && !emailAddresses.isEmpty()){
             email = emailAddresses.get(0).path("email_address").asText();
 
         }
