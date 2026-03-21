@@ -30,9 +30,9 @@ public class ClerkWebhookController {
 
 
     @PostMapping("/clerk")
-    public ResponseEntity<?> handleClerkWebhook(@RequestHeader("svix-id") String svixId,
-                                                @RequestHeader("svix-timestamp") String svixTimestamp,
-                                                @RequestHeader("svix-signature") String svixSignature,
+    public ResponseEntity<?> handleClerkWebhook(@RequestHeader(value = "svix-id") String svixId,
+                                                @RequestHeader(value = "svix-timestamp") String svixTimestamp,
+                                                @RequestHeader(value = "svix-signature") String svixSignature,
                                                 @RequestBody String payload ){
         log.info("Received Clerk Webhook Request");
         try{
@@ -64,7 +64,7 @@ public class ClerkWebhookController {
     }
 
     private void handleUserDeleted(JsonNode data) {
-        String clerkId = data.get("id").asText();
+        String clerkId = data.path("id").asText();
 
         profileService.deleteProfile(clerkId);
     }

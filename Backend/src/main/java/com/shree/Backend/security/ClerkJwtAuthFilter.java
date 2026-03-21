@@ -35,6 +35,7 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
 
         if(request.getRequestURI().contains("/webhooks")){
             filterChain.doFilter(request, response);
+            return;
         }
         String authHeader = request.getHeader("Authorization");
 

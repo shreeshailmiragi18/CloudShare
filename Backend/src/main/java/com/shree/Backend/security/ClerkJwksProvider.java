@@ -52,7 +52,7 @@ public class ClerkJwksProvider {
             String kty = keyNode.get("kty").asText();
             String alg = keyNode.get("alg").asText();
 
-            if("RSA".equals(kty) && "RSA256".equals(alg)){
+            if("RSA256".equals(kty) && "RSA256".equals(alg)){
                 String n = keyNode.get("n").asText();
                 String e = keyNode.get("e").asText();
 
