@@ -34,7 +34,10 @@ public class ClerkWebhookController {
                                                 @RequestHeader(value = "svix-timestamp") String svixTimestamp,
                                                 @RequestHeader(value = "svix-signature") String svixSignature,
                                                 @RequestBody String payload ){
-        log.info("Received Clerk Webhook Request");
+        log.info("🔥 Webhook HIT!");
+        log.info("Headers -> id: {}, timestamp: {}, signature: {}", svixId, svixTimestamp, svixSignature);
+        log.info("Payload -> {}", payload);
+
         try{
             boolean isValid = verifyWebhookSignature(svixId,svixTimestamp,svixSignature,payload);
             if(!isValid){
@@ -44,6 +47,7 @@ public class ClerkWebhookController {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(payload);
             String eventType = rootNode.path("type").asText();
+            log.info("📌 Event Type: {}", eventType);
 
             switch (eventType){
                 case "user.created":
@@ -63,11 +67,13 @@ public class ClerkWebhookController {
 
     }
 
+
     private void handleUserDeleted(JsonNode data) {
         String clerkId = data.path("id").asText();
 
         profileService.deleteProfile(clerkId);
     }
+
 
     private void handleUserUpdated(JsonNode data) {
         String clerkId = data.path("id").asText();
@@ -120,7 +126,6 @@ public class ClerkWebhookController {
 
         profileService.createProfile(newProfile);
         userCreditsService.createInitialCredits(clerkId);
-
     }
 
 
