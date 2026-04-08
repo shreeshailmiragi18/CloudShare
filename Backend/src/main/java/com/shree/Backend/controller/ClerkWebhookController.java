@@ -29,6 +29,8 @@ public class ClerkWebhookController {
     private final UserCreditsService userCreditsService;
 
 
+
+
     @PostMapping("/clerk")
     public ResponseEntity<?> handleClerkWebhook(@RequestHeader(value = "svix-id") String svixId,
                                                 @RequestHeader(value = "svix-timestamp") String svixTimestamp,
@@ -62,7 +64,9 @@ public class ClerkWebhookController {
             }
             return ResponseEntity.ok().build();
         }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
+            e.printStackTrace();   // 🔥 IMPORTANT
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
 
     }
