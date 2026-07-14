@@ -1,3 +1,11 @@
+import {
+  CreditCard,
+  Files,
+  LayoutDashboard,
+  Receipt,
+  Upload,
+} from "lucide-react";
+
 export const features = [
   {
     iconName: "ArrowUpCircle",
@@ -141,5 +149,38 @@ export const pricingPlans = [
     ],
     cta: "Go Ultimate",
     highlighted: false,
+  },
+];
+
+export const SideMenu_Data = [
+  {
+    id: "01",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
+  {
+    id: "02",
+    label: "Upload",
+    icon: Upload,
+    path: "/upload",
+  },
+  {
+    id: "03",
+    label: "My Files",
+    icon: Files,
+    path: "/myfiles",
+  },
+  {
+    id: "04",
+    label: "Subscription",
+    icon: CreditCard,
+    path: "/subscription",
+  },
+  {
+    id: "05",
+    label: "Transactions",
+    icon: Receipt,
+    path: "/transactions",
   },
 ];

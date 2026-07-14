@@ -86,7 +86,7 @@ const App = () => {
 
         <Route path="/*" element={<RedirectToSignIn />} />
       </Routes>
-    </BrowserRouter> 
+    </BrowserRouter>
   );
 };
 
