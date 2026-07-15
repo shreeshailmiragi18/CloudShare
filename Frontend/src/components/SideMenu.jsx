@@ -4,7 +4,7 @@ import { useUser } from "@clerk/clerk-react";
 import { User } from "lucide-react";
 import { SideMenu_Data } from "../assets/data";
 
-const SideMenu = () => {
+const SideMenu = ({ activeMenu }) => {
   const { user } = useUser();
   const navigate = useNavigate();
   return (
@@ -26,7 +26,7 @@ const SideMenu = () => {
       {SideMenu_Data.map((item, index) => (
         <button
           key={`menu_${index}`}
-          className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-3 transition-all duration-200 cursor-pointer hover:bg-gray-100 `}
+          className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-3 transition-all duration-200 cursor-pointer  ${activeMenu === item.label ? "bg-purple-500 text-blue-600 text-white font-medium shadow-md hover:bg-purple-600" : "hover:bg-gray-100"} `}
           onClick={() => navigate(item.path)}
         >
           <item.icon className="text-xl" />

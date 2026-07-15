@@ -4,7 +4,7 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import SideMenu from "./SideMenu";
 
-const Navbar = () => {
+const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
   return (
     <div className="flex items-center justify-between gap-5 bg-white border border-b border-gray-200/50 backdrop-blur-[2px] py-4 px-4 sm:px-7 sticky top-0 z-30">
@@ -43,7 +43,7 @@ const Navbar = () => {
       {/* mobile side menu */}
       {openSideMenu && (
         <div className="fixed top-[61px] left-0 right-0 bg-white border-b border-gray-200 lg:hidden z-20 shadow-lg">
-          <SideMenu />
+          <SideMenu activeMenu={activeMenu} />
         </div>
       )}
     </div>
