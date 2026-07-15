@@ -3,6 +3,7 @@ import { Menu, Share2, Wallet, X } from "lucide-react";
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import SideMenu from "./SideMenu";
+import CreditsDisplay from "./CreditsDisplay";
 
 const Navbar = () => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
@@ -32,7 +33,7 @@ const Navbar = () => {
       <SignedIn>
         <div className="flex items-center gap-4">
           <Link to="/subscriptions">
-            <Wallet />
+            <CreditsDisplay credits={5} />
           </Link>
           <div className="relative">
             <UserButton />
