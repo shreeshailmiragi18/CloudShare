@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserCreditsService {
 
     private final UserCreditsRepository userCreditsRepository;
+    private final ProfileService profileService;
 
     public UserCreditsDocument createInitialCredits(String clerkId) {
         UserCreditsDocument userCredits = UserCreditsDocument.builder()
@@ -27,5 +28,30 @@ public class UserCreditsService {
                 .plan(userCredits.getPlan())
                 .build();
     }
+
+    public UserCreditsDocument getUserCredits(String clerkId) {
+        return userCreditsRepository.findByClerkId(clerkId)
+                .orElseGet(() -> createInitialCredits(clerkId));
+    }
+
+    public UserCreditsDocument getUserCredits() {
+        String clerkId = profileService.getCurrentProfile().getClerkId();
+        return getUserCredits(clerkId);
+    }
+
+    public Boolean hasEnoughCredits(int requiredCredits){
+        UserCreditsDocument userCredits = getUserCredits();
+        return userCredits.getCredits() >= requiredCredits;
+    }
+
+    public UserCreditsDocument consumeCredit(){
+        UserCreditsDocument userCredits = getUserCredits();
+        if(userCredits.getCredits() == null){
+            return null;
+        }
+        userCredits.setCredits(userCredits.getCredits() - 1);
+        return userCreditsRepository.save(userCredits);
+    }
+
 
 }

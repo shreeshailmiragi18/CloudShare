@@ -6,6 +6,8 @@ import com.shree.Backend.dto.ProfileDto;
 import com.shree.Backend.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
@@ -98,5 +100,13 @@ public class ProfileService {
         if(existingProfile != null){
             profileRepository.delete(existingProfile);
         }
+    }
+
+    public ProfileDocument getCurrentProfile(){
+         if(SecurityContextHolder.getContext().getAuthentication() == null){
+             throw new UsernameNotFoundException("User not authenticated");
+         }
+         String clerkId = SecurityContextHolder.getContext().getAuthentication().getName();
+         return profileRepository.findByClerkId(clerkId);
     }
 }

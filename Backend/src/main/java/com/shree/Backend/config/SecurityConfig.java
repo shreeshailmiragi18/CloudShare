@@ -37,6 +37,7 @@ public class SecurityConfig {
 
                         // (optional) allow health/test endpoints
                         .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/files/**").permitAll()
 
                         // 🔐 everything else secured
                         .anyRequest().authenticated()

@@ -52,13 +52,21 @@ public class ClerkJwksProvider {
             String kty = keyNode.get("kty").asText();
             String alg = keyNode.get("alg").asText();
 
-            if("RSA256".equals(kty) && "RSA256".equals(alg)){
+            if ("RSA".equals(kty) && "RS256".equals(alg)) {
                 String n = keyNode.get("n").asText();
                 String e = keyNode.get("e").asText();
 
-                PublicKey publicKey = createPublicKey(n,e);
-                keyCache.put(kid,publicKey);
+                PublicKey publicKey = createPublicKey(n, e);
+                keyCache.put(kid, publicKey);
             }
+
+//            if("RSA256".equals(kty) && "RSA256".equals(alg)){
+//                String n = keyNode.get("n").asText();
+//                String e = keyNode.get("e").asText();
+//
+//                PublicKey publicKey = createPublicKey(n,e);
+//                keyCache.put(kid,publicKey);
+//            }
 
         }
         lastFetchTime = System.currentTimeMillis();
