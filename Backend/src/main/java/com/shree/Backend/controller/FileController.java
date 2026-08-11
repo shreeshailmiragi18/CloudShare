@@ -6,12 +6,21 @@ import com.shree.Backend.service.FileMetadataService;
 import com.shree.Backend.service.UserCreditsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,5 +58,20 @@ public class FileController {
         log.info("reached getPublicFile controller");
         FileMetadataDTO file = fileMetadataService.getPublicFile(id);
         return ResponseEntity.ok(file);
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> download(@PathVariable String id) throws IOException {
+        log.info("reached download controller");
+        FileMetadataDTO downloadableFile = fileMetadataService.getDownloadableFile(id);
+        Path path = Paths.get(downloadableFile.getFileLocation());
+        Resource resource = new UrlResource(path.toUri());
+        //replace file name which Contains unsupported Unicode character which are not supported in header
+        String filename = downloadableFile.getName()
+                .replaceAll("[^\\x20-\\x7E]", "");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" +filename+"\"")
+                .body(resource);
     }
 }
