@@ -98,4 +98,10 @@ public class FileMetadataService {
         log.info("returned the public file with Id : "+ document.getId());
         return mapToDTO(document);
     }
+
+    public FileMetadataDTO getDownloadableFile(String id){
+        log.info("reached getDownloadableFile Service");
+        FileMetadataDocument file = fileMetadataRepository.findById(id).orElseThrow(()-> new RuntimeException("File not found"));
+        return mapToDTO(file);
+    }
 }
