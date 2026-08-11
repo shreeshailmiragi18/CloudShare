@@ -39,7 +39,15 @@ public class FileController {
 
     @GetMapping("/my-files")
     public ResponseEntity<?> getFilesForCurrentUser(){
+        log.info("reached the getFilesForCurrentUser(read all files) controller");
        List<FileMetadataDTO> files = fileMetadataService.getFile();
        return ResponseEntity.ok(files);
+    }
+
+    @GetMapping("/public/{id}")
+    public ResponseEntity<?> getPublicFile(@PathVariable String id){
+        log.info("reached getPublicFile controller");
+        FileMetadataDTO file = fileMetadataService.getPublicFile(id);
+        return ResponseEntity.ok(file);
     }
 }

@@ -33,11 +33,11 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         // ✅ allow Clerk webhook
-                        .requestMatchers("/webhooks/**").permitAll()
+                        .requestMatchers("/webhooks/**", "/files/public/**").permitAll()
 
                         // (optional) allow health/test endpoints
                         .requestMatchers("/test/**").permitAll()
-                        .requestMatchers("/files/**").permitAll()
+//                        .requestMatchers("/files/**").permitAll()
 
                         // 🔐 everything else secured
                         .anyRequest().authenticated()

@@ -6,6 +6,7 @@ import com.shree.Backend.dto.FileMetadataDTO;
 import com.shree.Backend.repository.FileMetadataRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +19,12 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FileMetadataService {
     private final FileMetadataRepository fileMetadataRepository;
@@ -32,6 +35,7 @@ public class FileMetadataService {
     public List<FileMetadataDTO> uploadFiles(MultipartFile files[]) throws IOException {
         ProfileDocument currentProfile = profileService.getCurrentProfile();
         if(!userCreditsService.hasEnoughCredits(files.length)){
+            log.warn("user credit not enough");
             throw new RuntimeException("Not enough credits to upload files. Please purchase the plans");
         }
 
@@ -76,10 +80,22 @@ public class FileMetadataService {
     }
 
     public List<FileMetadataDTO> getFile(){
+        log.info("reached getFile service");
         ProfileDocument currentProfile = profileService.getCurrentProfile();
        List<FileMetadataDocument> files =  fileMetadataRepository.findByClerkId(currentProfile.getClerkId());
        return files.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
 
+    public FileMetadataDTO getPublicFile(String id){
+        log.info("reached getPublicFile Service");
+        Optional<FileMetadataDocument> fileOptional = fileMetadataRepository.findById(id);
+        if(fileOptional.isEmpty() || !fileOptional.get().getIsPublic()){
+            log.warn("trying to access the private file");
+            throw new RuntimeException("Unable to get the file");
+        }
 
+        FileMetadataDocument document =  fileOptional.get();
+        log.info("returned the public file with Id : "+ document.getId());
+        return mapToDTO(document);
     }
 }
