@@ -5,11 +5,10 @@ import com.shree.Backend.dto.FileMetadataDTO;
 import com.shree.Backend.service.FileMetadataService;
 import com.shree.Backend.service.UserCreditsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,18 +19,27 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/files")
+@Slf4j
 public class FileController {
     private final FileMetadataService fileMetadataService;
     private final UserCreditsService userCreditsService;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFiles(@RequestPart("files")MultipartFile[] files) throws IOException {
-        System.out.println("reached file controller");
+        log.info("reached file upload controller");
+        String userClerkId = SecurityContextHolder.getContext().getAuthentication().getName();
         Map<String,Object> response = new HashMap<>();
-       List<FileMetadataDTO> list =  fileMetadataService.uloadFiles(files);
+       List<FileMetadataDTO> list =  fileMetadataService.uploadFiles(files);
        UserCreditsDocument finalCredits = userCreditsService.getUserCredits();
        response.put("files",list);
        response.put("remainingCredits",finalCredits.getCredits());
+       log.info(userClerkId+" file uploaded successfully,"+"remainingCredits: "+finalCredits.getCredits());
        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/my-files")
+    public ResponseEntity<?> getFilesForCurrentUser(){
+       List<FileMetadataDTO> files = fileMetadataService.getFile();
+       return ResponseEntity.ok(files);
     }
 }

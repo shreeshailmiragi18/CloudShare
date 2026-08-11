@@ -29,7 +29,7 @@ public class FileMetadataService {
     private final UserCreditsService userCreditsService;
     List<FileMetadataDocument> savedFiles = new ArrayList<>();
 
-    public List<FileMetadataDTO> uloadFiles(MultipartFile files[]) throws IOException {
+    public List<FileMetadataDTO> uploadFiles(MultipartFile files[]) throws IOException {
         ProfileDocument currentProfile = profileService.getCurrentProfile();
         if(!userCreditsService.hasEnoughCredits(files.length)){
             throw new RuntimeException("Not enough credits to upload files. Please purchase the plans");
@@ -73,6 +73,13 @@ public class FileMetadataService {
                 .isPublic(fileMetadataDocument.getIsPublic())
                 .uploadedAt(fileMetadataDocument.getUploadedAt())
                 .build();
+    }
+
+    public List<FileMetadataDTO> getFile(){
+        ProfileDocument currentProfile = profileService.getCurrentProfile();
+       List<FileMetadataDocument> files =  fileMetadataRepository.findByClerkId(currentProfile.getClerkId());
+       return files.stream().map(this::mapToDTO).collect(Collectors.toList());
+
 
     }
 }
