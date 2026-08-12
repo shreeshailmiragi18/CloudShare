@@ -74,4 +74,11 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" +filename+"\"")
                 .body(resource);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFile(@PathVariable String id){
+        log.info("reached deleteFile controller");
+        fileMetadataService.deleteFile(id);
+        return ResponseEntity.noContent().build();
+    }
 }

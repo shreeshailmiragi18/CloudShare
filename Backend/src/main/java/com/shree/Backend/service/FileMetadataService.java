@@ -104,4 +104,24 @@ public class FileMetadataService {
         FileMetadataDocument file = fileMetadataRepository.findById(id).orElseThrow(()-> new RuntimeException("File not found"));
         return mapToDTO(file);
     }
+
+    public void deleteFile(String id){
+        log.info("reached deleteFile Service");
+        try{
+            ProfileDocument currentProfile = profileService.getCurrentProfile();
+            FileMetadataDocument file = fileMetadataRepository.findById(id)
+                    .orElseThrow(()-> new RuntimeException("file not found"));
+            if(!file.getClerkId().equals(currentProfile.getClerkId())){
+                log.warn("trying to delete the others file");
+                throw new RuntimeException("cannot delete file");
+            }
+
+            Path filePath = Paths.get(file.getFileLocation());
+            Files.deleteIfExists(filePath);
+
+            fileMetadataRepository.deleteById(id);
+        } catch (IOException e) {
+            throw new RuntimeException("Error deleting file");
+        }
+    }
 }
