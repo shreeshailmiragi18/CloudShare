@@ -81,4 +81,12 @@ public class FileController {
         fileMetadataService.deleteFile(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> togglePublic(@PathVariable String id){
+        log.info("reached togglePublicFile controller");
+        FileMetadataDTO file = fileMetadataService.togglePublic(id);
+        log.info("file with id: "+ id + "toggled to " +file.getIsPublic());
+        return ResponseEntity.ok(file);
+    }
 }

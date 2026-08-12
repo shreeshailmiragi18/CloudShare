@@ -124,4 +124,13 @@ public class FileMetadataService {
             throw new RuntimeException("Error deleting file");
         }
     }
+
+    public FileMetadataDTO togglePublic(String id){
+        log.info("reached togglePublicFile Service");
+        FileMetadataDocument file = fileMetadataRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("File not found"));
+        file.setIsPublic(!file.getIsPublic());
+        fileMetadataRepository.save(file);
+        return mapToDTO(file);
+    }
 }
