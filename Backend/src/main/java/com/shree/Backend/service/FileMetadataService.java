@@ -7,6 +7,9 @@ import com.shree.Backend.repository.FileMetadataRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -125,12 +128,27 @@ public class FileMetadataService {
         }
     }
 
-    public FileMetadataDTO togglePublic(String id){
-        log.info("reached togglePublicFile Service");
-        FileMetadataDocument file = fileMetadataRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("File not found"));
-        file.setIsPublic(!file.getIsPublic());
-        fileMetadataRepository.save(file);
-        return mapToDTO(file);
+
+    public FileMetadataDTO togglePublic(String id) {
+            log.info("reached togglePublicFile Service");
+            FileMetadataDocument file = fileMetadataRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("File not found"));
+
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
+
+            String currentClerkId = authentication.getName();
+
+            if (!file.getClerkId().equals(currentClerkId)) {
+                log.warn ("unauthorized user trying to toggle with id :" +currentClerkId);
+                throw new AccessDeniedException("You do not own this file");
+            }
+
+            file.setIsPublic(!file.getIsPublic());
+
+            fileMetadataRepository.save(file);
+
+            return mapToDTO(file);
     }
+
 }
