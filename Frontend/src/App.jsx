@@ -6,10 +6,12 @@ import Transactions from "./pages/Transactions";
 import Upload from "./pages/Upload";
 import Landing from "./pages/Landing";
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <Toaster position="bottom-right" reverseOrder={true} />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route
