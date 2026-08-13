@@ -1,4 +1,12 @@
-import { FileIcon, FileText, Image, Music, Video } from "lucide-react";
+import {
+  FileIcon,
+  FileText,
+  Globe,
+  Image,
+  Lock,
+  Music,
+  Video,
+} from "lucide-react";
 import React from "react";
 
 const FileCard = ({ file }) => {
@@ -43,6 +51,19 @@ const FileCard = ({ file }) => {
     >
       <div className="h-32 bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center p-4">
         {getFileIcon()}
+      </div>
+      {/* public/private badge */}
+      <div className="absolute top-2 right-2">
+        <div
+          className={`rounded-full p-1.5 ${file.isPublic ? "bg-green-100" : "bg-gray-100"}`}
+          title={file.isPublic ? "Public" : "Private"}
+        >
+          {file.isPublic ? (
+            <Globe size={14} className="text-green-600" />
+          ) : (
+            <Lock size={14} className="text-gray-500" />
+          )}
+        </div>
       </div>
     </div>
   );
