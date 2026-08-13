@@ -8,6 +8,11 @@ import {
   Lock,
   Trash2,
   Eye,
+  FileText,
+  Image,
+  Music,
+  Video,
+  FileIcon,
 } from "lucide-react";
 import DashboardLayout from "../layout/DashboardLayout";
 import { useState } from "react";
@@ -23,6 +28,25 @@ const MyFiles = () => {
   const [view, setView] = useState("list");
   const { getToken } = useAuth();
   const navigate = useNavigate();
+  const getFileIcon = (file) => {
+    const extension = file.name.split(".").pop().toLowerCase();
+    if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(extension)) {
+      return <Image size={24} className="text-purple-500" />;
+    }
+
+    if (["mp4", "avi", "mov", "mkv", "wmv", "webm"].includes(extension)) {
+      return <Video size={24} className="text-blue-500" />;
+    }
+
+    if (["mp3", "wav", "ogg", "flac", "m4a"].includes(extension)) {
+      return <Music size={24} className="text-green-500" />;
+    }
+
+    if (["pdf", "doc", "docx", "txt", "rtf"].includes(extension)) {
+      return <FileText size={24} className="text-amber-500" />;
+    }
+    return <FileIcon size={24} className="text-purple-500" />;
+  };
 
   const fetchFiles = async () => {
     try {
@@ -113,7 +137,7 @@ const MyFiles = () => {
                   <tr className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                       <div className="flex items-center gap-2">
-                        <File size={20} className="text-blue-600" />
+                        {getFileIcon(file)}
                         {file.name}
                       </div>
                     </td>
@@ -172,12 +196,15 @@ const MyFiles = () => {
                         </div>
                         <div className="flex justify-center">
                           {file.isPublic ? (
-                            <Link
-                              to={`/files/${file.id}`}
+                            <a
+                              href={`/files/${file.id}`}
+                              target="_blank"
+                              title="View File"
+                              rel="noopener noreferrer"
                               className="text-gray-500 hover:text-blue-600"
                             >
                               <Eye size={18} />
-                            </Link>
+                            </a>
                           ) : (
                             <span className=" w-[18px]"></span>
                           )}
