@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import FileCard from "../components/FileCard";
 
 const MyFiles = () => {
   const [files, setFiles] = useState([]);
@@ -80,7 +81,11 @@ const MyFiles = () => {
             </button>
           </div>
         ) : view === "grid" ? (
-          <div className="div">grid view </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {files.map((file) => (
+              <FileCard key={file.id} file={file} />
+            ))}
+          </div>
         ) : (
           <div className="overflow-x-auto bg-white rounded-lg shadow">
             <table className="min-w-full">
