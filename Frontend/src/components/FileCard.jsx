@@ -65,6 +65,22 @@ const FileCard = ({ file }) => {
           )}
         </div>
       </div>
+      {/* file info */}
+      <div className="p-4">
+        <div className="flex justify-between items-start">
+          <div className="overflow-hidden">
+            <h3
+              title={file.name}
+              className="font-medium text-gray-900 truncate"
+            >
+              {file.name}
+            </h3>
+            <p className="text-xs text-gray-500 mt-1">
+              {formatFileSize(file.size)} . {formatDate(file.uploadedAt)}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
