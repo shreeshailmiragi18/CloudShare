@@ -86,6 +86,31 @@ const MyFiles = () => {
     }
   };
 
+  //handle download file
+  const handleDownload = async (file) => {
+    try {
+      const token = await getToken();
+      const response = await axios.get(
+        `http://localhost:8080/api/v1.0/files/download/${file.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: "blob",
+        },
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.name);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file: ", error);
+      toast.error("Failed to download file. Please try again later.");
+    }
+  };
+
   useEffect(() => {
     fetchFiles();
   }, [getToken]);
@@ -205,6 +230,7 @@ const MyFiles = () => {
                       <div className="grid grid-cols-3 gap-4">
                         <div className="flex justify-center">
                           <button
+                            onClick={() => handleDownload(file)}
                             title="Download"
                             className="text-gray-500 hover:text-blue-600"
                           >
