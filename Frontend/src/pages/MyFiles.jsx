@@ -22,12 +22,34 @@ import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import FileCard from "../components/FileCard";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 const MyFiles = () => {
   const [files, setFiles] = useState([]);
   const [view, setView] = useState("list");
   const { getToken } = useAuth();
   const navigate = useNavigate();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
+
+  const handleDeleteFile = async () => {
+    if (!fileToDelete) return;
+    try {
+      const token = await getToken();
+      await axios.delete(
+        `http://localhost:8080/api/v1.0/files/${fileToDelete.id}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      setFiles(files.filter((file) => file.id !== fileToDelete.id));
+      toast.success(`File "${fileToDelete.name}" deleted successfully.`);
+    } catch (error) {
+      console.error("Error deleting file: ", error);
+      toast.error("Failed to delete file. Please try again later.");
+    } finally {
+      setIsDialogOpen(false);
+      setFileToDelete(null);
+    }
+  };
   const getFileIcon = (file) => {
     const extension = file.name.split(".").pop().toLowerCase();
     if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(extension)) {
@@ -239,6 +261,10 @@ const MyFiles = () => {
                         </div>
                         <div className="flex justify-center">
                           <button
+                            onClick={() => {
+                              setFileToDelete(file);
+                              setIsDialogOpen(true);
+                            }}
                             title="Delete"
                             className="text-gray-500 hover:text-red-600"
                           >
@@ -268,6 +294,16 @@ const MyFiles = () => {
             </table>
           </div>
         )}
+        <ConfirmationDialog
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          title="Confirm Deletion"
+          message={`Are you sure you want to delete "${fileToDelete?.name}"? This action cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={handleDeleteFile}
+          confirmationButtonClass="bg-red-600 hover:bg-red-700"
+        />
       </div>
     </DashboardLayout>
   );
