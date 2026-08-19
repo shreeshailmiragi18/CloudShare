@@ -23,6 +23,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import FileCard from "../components/FileCard";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import ShareLinkDialog from "../components/ShareLinkDialog";
 
 const MyFiles = () => {
   const [files, setFiles] = useState([]);
@@ -31,6 +32,23 @@ const MyFiles = () => {
   const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
+  const [sharedLink, setSharedLink] = useState({
+    isOpen: false,
+    file: null,
+    link: "",
+  });
+
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link).then(
+      () => {
+        toast.success("Link copied to clipboard!");
+      },
+      (err) => {
+        console.error("Could not copy text: ", err);
+        toast.error("Failed to copy link. Please try again.");
+      },
+    );
+  };
 
   const handleDeleteFile = async () => {
     if (!fileToDelete) return;
@@ -239,7 +257,16 @@ const MyFiles = () => {
                           )}
                         </button>
                         {file.isPublic && (
-                          <button className="flex items-center gap-2 cursor-pointer group text-blue-600">
+                          <button
+                            onClick={() =>
+                              setSharedLink({
+                                isOpen: true,
+                                file: file,
+                                link: `${window.location.origin}/files/${file.id}`,
+                              })
+                            }
+                            className="flex items-center gap-2 cursor-pointer group text-blue-600"
+                          >
                             <Copy size={16} />
                             <span className="group-hover:underline">
                               Share Link
@@ -303,6 +330,19 @@ const MyFiles = () => {
           cancelText="Cancel"
           onConfirm={handleDeleteFile}
           confirmationButtonClass="bg-red-600 hover:bg-red-700"
+        />
+
+        <ShareLinkDialog
+          isOpen={sharedLink.isOpen}
+          onClose={() =>
+            setSharedLink({
+              isOpen: false,
+              file: null,
+              link: "",
+            })
+          }
+          link={sharedLink.link}
+          onCopy={handleCopyLink}
         />
       </div>
     </DashboardLayout>
