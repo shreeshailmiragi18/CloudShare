@@ -64,6 +64,28 @@ const MyFiles = () => {
     }
   };
 
+  //toggle status of file between public and private
+  const toggleFileStatus = async (fileToUpdate) => {
+    try {
+      const token = await getToken();
+      const response = await axios.patch(
+        `http://localhost:8080/api/v1.0/files/${fileToUpdate.id}/toggle-status`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } },
+        setFiles(
+          files.map((file) =>
+            file.id === fileToUpdate.id
+              ? { ...file, isPublic: !file.isPublic }
+              : file,
+          ),
+        ),
+      );
+    } catch (error) {
+      console.error("Error toggling file status: ", error);
+      toast.error("Failed to toggle file status. Please try again later.");
+    }
+  };
+
   useEffect(() => {
     fetchFiles();
   }, [getToken]);
@@ -149,7 +171,10 @@ const MyFiles = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       <div className="flex items-center gap-4">
-                        <button className="flex items-center gap-2 cursor-pointer group">
+                        <button
+                          onClick={() => toggleFileStatus(file)}
+                          className="flex items-center gap-2 cursor-pointer group"
+                        >
                           {file.isPublic ? (
                             <>
                               <Globe size={16} className="text-green-600" />
