@@ -7,88 +7,91 @@ import Upload from "./pages/Upload";
 import Landing from "./pages/Landing";
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Toaster } from "react-hot-toast";
+import { UserCreditsProvider } from "./context/UserCreditsContext";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Toaster position="bottom-right" reverseOrder={true} />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route
-          path="/dashboard"
-          element={
-            <>
-              <SignedIn>
-                <Dashboard />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-        <Route
-          path="/upload"
-          element={
-            <>
-              <SignedIn>
-                <Upload />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-        <Route
-          path="/myfiles"
-          element={
-            <>
-              <SignedIn>
-                {" "}
-                <MyFiles />{" "}
-              </SignedIn>
-              <SignedOut>
-                {" "}
-                <RedirectToSignIn />{" "}
-              </SignedOut>
-            </>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <>
-              <SignedIn>
-                {" "}
-                <Subscription />{" "}
-              </SignedIn>
-              <SignedOut>
-                {" "}
-                <RedirectToSignIn />{" "}
-              </SignedOut>
-            </>
-          }
-        />
-        <Route
-          path="/transactions"
-          element={
-            <>
-              <SignedIn>
-                {" "}
-                <Transactions />{" "}
-              </SignedIn>
-              <SignedOut>
-                {" "}
-                <RedirectToSignIn />{" "}
-              </SignedOut>
-            </>
-          }
-        />
+    <UserCreditsProvider>
+      <BrowserRouter>
+        <Toaster position="bottom-right" reverseOrder={true} />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <SignedIn>
+                  <Dashboard />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/upload"
+            element={
+              <>
+                <SignedIn>
+                  <Upload />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/myfiles"
+            element={
+              <>
+                <SignedIn>
+                  {" "}
+                  <MyFiles />{" "}
+                </SignedIn>
+                <SignedOut>
+                  {" "}
+                  <RedirectToSignIn />{" "}
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/subscription"
+            element={
+              <>
+                <SignedIn>
+                  {" "}
+                  <Subscription />{" "}
+                </SignedIn>
+                <SignedOut>
+                  {" "}
+                  <RedirectToSignIn />{" "}
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <>
+                <SignedIn>
+                  {" "}
+                  <Transactions />{" "}
+                </SignedIn>
+                <SignedOut>
+                  {" "}
+                  <RedirectToSignIn />{" "}
+                </SignedOut>
+              </>
+            }
+          />
 
-        <Route path="/*" element={<RedirectToSignIn />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/*" element={<RedirectToSignIn />} />
+        </Routes>
+      </BrowserRouter>
+    </UserCreditsProvider>
   );
 };
 
