@@ -123,6 +123,7 @@ public class FileMetadataService {
             Files.deleteIfExists(filePath);
 
             fileMetadataRepository.deleteById(id);
+            log.info("deleted the file with Id : "+ id);
         } catch (IOException e) {
             throw new RuntimeException("Error deleting file");
         }
