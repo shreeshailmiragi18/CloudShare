@@ -1,6 +1,7 @@
 package com.shree.Backend.controller;
 
 import com.shree.Backend.dto.PaymentDTO;
+import com.shree.Backend.dto.PaymentVerificationDTO;
 import com.shree.Backend.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,15 @@ public class PaymentController {
         }else{
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @PostMapping("/verify-payment")
+    public ResponseEntity<?> verifyPayment(@RequestBody PaymentVerificationDTO paymentVerificationDTO){
+       PaymentDTO response = paymentService.verifyPayment(paymentVerificationDTO);
+       if(response.getSuccess()){
+            return ResponseEntity.ok().body(response);
+       }else{
+           return ResponseEntity.badRequest().body(response);
+       }
     }
 }
