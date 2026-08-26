@@ -1,6 +1,6 @@
 import DashboardLayout from "../layout/DashboardLayout";
 import { useAuth } from "@clerk/clerk-react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import UploadBox from "../components/UploadBox";
 import { AlertCircle } from "lucide-react";
 import { UserCreditsContext } from "../context/UserCreditsContext";
@@ -140,6 +140,14 @@ const Upload = () => {
     credits <= 0 ||
     files.length > credits ||
     uploading;
+
+  useEffect(() => {
+    const displayToken = async () => {
+      const token = await getToken();
+      console.log(token);
+    };
+    displayToken();
+  }, []);
 
   return (
     <DashboardLayout activeMenu="Upload">
