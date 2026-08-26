@@ -97,6 +97,10 @@ public class PaymentService {
             int creditsToAdd=0;
             String plan = "BASIC";
             switch(paymentVerificationDTO.getPlanId()){
+                case "basic":
+                    creditsToAdd =100;
+                    plan = "BASIC";
+                    break;
                 case "premium":
                     creditsToAdd = 500;
                     plan = "PREMIUM";
