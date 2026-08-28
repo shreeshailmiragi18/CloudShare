@@ -122,10 +122,10 @@ export const pricingPlans = [
   },
   {
     name: "Premium",
-    price: "1000",
+    price: "500",
     description: "Ideal for individuals with moderate storage needs.",
     features: [
-      "1000 files uploads",
+      "500 files uploads",
       "Advanced file retention",
       "30-day file retention",
       "Priority email support",
@@ -136,11 +136,11 @@ export const pricingPlans = [
   },
   {
     name: "Ultimate",
-    price: "2500",
+    price: "2000",
     description:
       "Best for professionals and businesses with high storage needs.",
     features: [
-      "5000 files uploads",
+      "2500 files uploads",
       "Team collaboration",
       "Unlimited file retention",
       "24/7 Priority support",

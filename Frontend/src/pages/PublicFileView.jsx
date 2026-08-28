@@ -384,30 +384,45 @@ const PublicFileView = () => {
     try {
       setError(null);
 
-      const response = await axios.get(
-        `${API_URL}/files/public/download/${fileId}`,
-        {
-          responseType: "blob",
-        },
-      );
+      const response = await axios.get(`${API_URL}/files/download/${fileId}`, {
+        responseType: "blob",
+      });
 
-      const url = window.URL.createObjectURL(response.data);
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"] || "application/octet-stream",
+      });
+
+      const url = window.URL.createObjectURL(blob);
 
       const downloadLink = document.createElement("a");
 
       downloadLink.href = url;
-      downloadLink.download = file.name || "download";
+      downloadLink.setAttribute("download", file.name || "download");
 
       document.body.appendChild(downloadLink);
       downloadLink.click();
 
-      document.body.removeChild(downloadLink);
-
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => {
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
+      }, 100);
     } catch (err) {
-      console.error("Download error:", err.response?.data || err.message);
+      console.error("Full download error:", err);
 
-      setError("Could not download the file. Please try again.");
+      if (err.response?.data instanceof Blob) {
+        const errorText = await err.response.data.text();
+        console.error("Backend error message:", errorText);
+      }
+
+      console.error("Status:", err.response?.status);
+
+      setError(
+        `Could not download the file. ${
+          err.response?.status
+            ? `Server returned error ${err.response.status}.`
+            : "Please try again."
+        }`,
+      );
     }
   };
 
