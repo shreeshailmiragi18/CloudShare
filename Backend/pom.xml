@@ -79,10 +79,9 @@
         </dependency>
         <!-- Source: https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.10.59</version>
-            <scope>compile</scope>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.33.0</version>
         </dependency>
 	</dependencies>
 
